@@ -4,35 +4,102 @@
 <meta charset="utf-8">
 <title>Magic</title>
 <style>
-ul{
-  list-style: none;
+/* Marquee */
+.marquee ul {
+	list-style: none;
+	height:100px;
+}
+.marquee .wrap{
+	width:500px;
+	height:100px;
+}
+.marquee ul li {
+	float: left;
+	width:100px;
+	margin: 10px;
+}
+.scrollBar .scrollbar {
+	position: absolute;
+	display: block;
+	width: 10px;
+	height: 30px;
+	background-color: #ccc;
+}
+.scrollBar .track {
+	position: relative;
+	overflow: hidden;
+	width: 10px;
+	height: 100px;
+	background-color: #efefef;
+}
+.scrollBar .next {
+	width: 10px;
+	height: 10px;
+	background-color: #F93;
+}
+.scrollBar .back {
+	width: 10px;
+	height: 10px;
+	background-color: #F93;
+}
+.scrollBar .wrap {
+	float: left;
+	width: 100px;
+	height: 120px;
+	overflow: hidden;
+}
+.scrollBar .container {
+	width: 100px;
+	height: 500px;
+	background-color: #FC9;
 }
 </style>
+<script src="js/jquery-latest.js"></script>
+<script src="js/magic.js"></script>
 </head>
-<body>
-<a><img src="images/a.jpg" class="mc_btn"></a>
-<div class="mc_marquee_x">
-  <div class="arrows"><a href="#" class="prev">Prev</a></div>
+<body data-magic="lazy">
+<h1>Magic Plugins</h1>
+<h2>ScrollBar</h2>
+<div class="scrollBar" data-magic="scrollbar">
+  <div class="wrap">
+    <div class="container">aaa<br />
+      bbb</div>
+  </div>
+  <div style="float:left">
+    <div class="back"></div>
+    <div class="track">
+      <div class="scrollbar"></div>
+    </div>
+    <div class="next"></div>
+  </div>
+</div>
+<h2>Marquee</h2>
+<div class="marquee" data-magic="marquee">
+  <a href="#" class="back">Back</a>
   <div class="wrap">
     <ul>
-      <li><div style="width:100px;height:200px;background-color:red">
-        <article></article>
+      <li>
+        <div style="width:100px;height:200px;background-color:red"></div>
+
       </li>
-      <li><div style="width:100px;height:200px;background-color:blue">
-        <article></article>
+      <li>
+        <div style="width:100px;height:200px;background-color:blue"></div>
+
       </li>
-      <li><div style="width:100px;height:200px;background-color:yellow">
-        <article></article>
+      <li>
+        <div style="width:100px;height:200px;background-color:yellow"></div>
+
       </li>
-      <li><div style="width:100px;height:200px;background-color:black">
-        <article></article>
+      <li>
+        <div style="width:100px;height:200px;background-color:black"></div>
+
       </li>
     </ul>
   </div>
-  <div class="arrows"><a href="#" class="next">Next</a></div>
+  <a href="#" class="next">Next</a>
   <div class="caption"></div>
 </div>
-<script src="js/jquery-latest.js"></script>    
-<script src="js/magic.js"></script>
+<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+<img data-original="images/banner.gif" >
 </body>
 </html>
