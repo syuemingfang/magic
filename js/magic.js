@@ -9,6 +9,67 @@
 		else
 			$(this).html(str)
 	}
+	$.fn.mc_load=function(options){
+		var settings={
+			obj:{
+				container: "ul"
+			},
+			animate: "fade",
+			mode: "none",
+			animateSpeed: 500
+		}
+		var set=$.extend(settings, options);
+		return this.each(
+			function(){
+				initialize($(this), set);
+			}
+		);
+		function initialize(that, set){
+			var obj={
+				container: that.find(set.obj.container)		
+			},
+			html=null,
+			scrollTop=null,
+			height=null;
+			html=that.html(),
+			offset=0;
+			that.html("Loading");
+			exec(that);
+			height=$(window).height();
+			$(window).scroll(function(){exec(that)});
+			function exec(that){
+				if(set.mode == "lazy"){
+					var pos=$(document).scrollTop();
+					offset=that.offset();
+					if(offset.top < parseInt(pos+height, 10)){
+						execThis(that);
+					}
+				}	
+				else{
+					execThis(that);
+				}
+				function execThis(that){
+					if(that.complete == true){
+						that.fadeOut(set.animateSpeed/2,
+							function(){
+								that.html(html);
+								that.fadeIn(set.animateSpeed/2)	
+							}
+						);		
+					} else{
+						this.onload=function(){
+							that.fadeOut(set.animateSpeed/2,
+								function(){
+									that.html(html);
+									that.fadeIn(set.animateSpeed/2)	
+								}
+							);	
+						}
+					}
+				}
+			}
+		}
+	}
 	$.fn.mc_menu=function(options){
 		var settings={
 			obj:{
@@ -16,7 +77,7 @@
 				item: "li"
 			},
 			defaultCSS: true,
-			animate: "fadeIn",
+			animate: "fade",
 			animateSpeed: 500
 		}
 		var set=$.extend(settings, options);
@@ -45,75 +106,6 @@
 					$(this).children(set.obj.container).fadeOut(set.animateSpeed);
 				}
 			);
-		}
-	}
-	$.fn.mc_lazy=function(options){
-		var settings={
-			event:"scroll",
-			effect:"none",
-			container:window,
-			attribute:"data-original"
-		}
-		var set=$.extend(settings, options);
-		return this.each(
-			function(){
-				initialize($(this), set);
-			}
-		);
-		function initialize(that, set){
-			var obj={
-				img:that.find("img")
-			},
-			img=null,
-			imgArr=[],
-			scrollTop=null,
-			wH=null, //Window Height
-			cH=null; //Currient Height
-			offset=null;
-			if(obj.img.length > 0){
-				for(var i=0; i < obj.img.length; i++){
-					imgArr.push(obj.img[i]);
-				}
-			}
-			scrollTop=$(document).scrollTop();
-			wH=$(window).height();
-			lazy();
-			$(window).scroll(
-				function(){
-					scrollTop=$(document).scrollTop();
-					lazy();
-				}
-			);
-			function lazy(){
-				if(imgArr.length > 0){
-					for(var i=0; i < imgArr.length; i++){
-						img=imgArr[i];
-						offset=$(img).offset();
-						cH=scrollTop+wH;
-						if(offset != null){
-							if(offset.top < scrollTop+wH){
-								if($(img).attr("src") != $(img).attr(set.attribute)){
-									$(img).attr("src", $(img).attr(set.attribute));
-								} else{
-									imgArr.remove(img);
-								}
-							}
-						}
-					}
-				}
-			}
-			Array.prototype.indexOf=function(val){
-				for(var i = 0; i < this.length; i++){
-					if (this[i] == val) return i;
-				}
-				return -1;
-			}
-			Array.prototype.remove=function(val){
-				var index=this.indexOf(val);
-				if(index > -1){
-					this.splice(index, 1);
-				}			
-			}
 		}
 	}
 	$.fn.mc_scrollbar=function(options){
@@ -284,11 +276,14 @@
 					case "src":
 					var that=$(this),
 					img=that.attr("src"),
-					newImg=null;
+					newImg=null,
+					html=null;
 					newImg=getPath(img, set.type, set.name);
 					if(that.attr("dynsrc")) newImg=that.attr("dynsrc");
 					switch(set.animate){
 						case "fade":
+						html=that.html();
+						that.html("<span>"+html+"</span>");
 						that.stop().animate({opacity: 0}, set.speed);
 						that.parent().css("display", "inline-block");
 						that.parent().css("background-image", "url("+newImg+")");
@@ -436,14 +431,14 @@
 			if(!set.arrowsView) that.find(set.arrowsTag).css("display","none");
 			if(!set.captionView) that.find(set.obj.caption).css("display","none");
 			if(set.defaultCss){
-				// container //
-				obj.container.css("position","absolute");		
-				obj.container.css("margin","0");		
-				obj.container.css("padding","0");	
+				// Container //
+				obj.container.css("position", "absolute");		
+				obj.container.css("margin", "0");		
+				obj.container.css("padding", "0");	
 				// Wrap //
-				obj.wrap.css("position","relative");						
-				obj.wrap.css("overflow","hidden");
-				obj.wrap.css("float","left");
+				obj.wrap.css("position", "relative");						
+				obj.wrap.css("overflow", "hidden");
+				obj.wrap.css("float", "left");
 			}
 			// If Not Set Width Get Item Width //
 			if(set.width == "auto"){
@@ -490,10 +485,10 @@
 				if(number <= 1) number=2;
 				if(axis == "horizontal") obj.container.width(containerLength[that]*number*2);
 				if(axis == "vertical") obj.container.height(containerLength[that]*number*2);
-				html=obj.container.html();
+				var html=null;
 				for(var i=0; i < number; i++){
-					obj.container.append(html);
-					obj.container.prepend(html);
+					html=obj.container.html();
+					obj.container.html(html+html);
 				}
 			}			
 			obj.container.hover(
@@ -651,9 +646,9 @@
 	};
 })(jQuery);
 $(document).ready(function() {	
+	$("*[data-magic=load]").mc_load();
 	$("*[data-magic=btn]").mc_change();
 	$("*[data-magic=menu]").mc_menu();
-	$("*[data-magic=lazy]").mc_lazy();
 	$("*[data-magic=scrollbar]").mc_scrollbar();
 	$("*[data-magic=marquee]").mc_marquee();
 });

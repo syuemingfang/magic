@@ -201,119 +201,125 @@
 </head>
 <body data-magic="lazy">
 	<h1>Magic Plugins</h1>
-<ul class="list">
-	<li><h2>Menu</h2>
-		<h3>Instructions</h3>
-		<p>
-&lt;ul data-magic="menu"&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;li&gt;Father<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Son&lt;/li&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br />
-&lt;/ul&gt;</p>
-		<h3>Examples</h3>
-		<ul class="menu" data-magic="menu">
-			<li><a href="http://yahoo.com">Father</a>
-				<ul>
-					<li>Son</li>
-					<li>Son</li>
-				</ul>
-			</li>
-			<li>Father</li>
-			<li><a href="http://google.com">Father</a>
-				<ul>
-					<li>Son
+	<ul class="list">
+		<li><h2>Menu</h2>
+			<h3>Instructions</h3>
+			<p>
+				&lt;ul data-magic="menu"&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;li&gt;Father<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Son&lt;/li&gt;<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br />
+				&lt;/ul&gt;</p>
+				<h3>Examples</h3>
+				<ul class="menu" data-magic="menu">
+					<li><a href="http://yahoo.com">Father</a>
 						<ul>
-							<li>Grandson</li>
-							<li><a href="http://pchome.com.tw">Grandson</a></li>
+							<li>Son</li>
+							<li>Son</li>
 						</ul>
 					</li>
-					<li>Son</li>
+					<li>Father</li>
+					<li><a href="http://google.com">Father</a>
+						<ul>
+							<li>Son
+								<ul>
+									<li>Grandson</li>
+									<li><a href="http://pchome.com.tw">Grandson</a></li>
+								</ul>
+							</li>
+							<li>Son</li>
+						</ul>
+					</li>
+					<li>Father</li>
 				</ul>
-			</li>
-			<li>Father</li>
-		</ul>
-	</li><li><h2>Scrollbar</h2>
-		<h3>Instructions</h3>
-		<p>
-&lt;div data-magic="scrollbar"&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="container"&gt;Something&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;div class="back"&gt;&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;div class="track"&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="scrollbar"&gt;&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;div class="next"&gt;&lt;/div&gt;<br />
-&lt;/div&gt;
-		</p>
-		<h3>Examples</h3>
-		<div class="scrollbar1" data-magic="scrollbar">
-			<div class="wrap">
-				<div class="container">Something</div>
-			</div>
-			<div style="float:left">
-				<div class="back"></div>
-				<div class="track">
-					<div class="scrollbar"></div>
+			</li><li><h2>Scrollbar</h2>
+			<h3>Instructions</h3>
+			<p>
+				&lt;div data-magic="scrollbar"&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="container"&gt;Something&lt;/div&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;div class="back"&gt;&lt;/div&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;div class="track"&gt;<br />
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="scrollbar"&gt;&lt;/div&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+				&nbsp;&nbsp;&nbsp;&lt;div class="next"&gt;&lt;/div&gt;<br />
+				&lt;/div&gt;
+			</p>
+			<h3>Examples</h3>
+			<div class="scrollbar1" data-magic="scrollbar">
+				<div class="wrap">
+					<div class="container">Something</div>
 				</div>
-				<div class="next"></div>
-			</div>
-		</div>
-		<div class="scrollbar2" data-magic="scrollbar">
-			<div class="wrap">
-				<div class="container">Something</div>
-			</div>
-			<div style="clear:both">
-				<div class="back"></div>
-				<div class="track">
-					<div class="scrollbar"></div>
+				<div style="float:left">
+					<div class="back"></div>
+					<div class="track">
+						<div class="scrollbar"></div>
+					</div>
+					<div class="next"></div>
 				</div>
-				<div class="next"></div>
+			</div>
+			<div class="scrollbar2" data-magic="scrollbar">
+				<div class="wrap">
+					<div class="container">Something</div>
+				</div>
+				<div style="clear:both">
+					<div class="back"></div>
+					<div class="track">
+						<div class="scrollbar"></div>
+					</div>
+					<div class="next"></div>
+				</div>
 			</div>
 		</div>
+	</li><li><h2>Marquee</h2>
+	<h3>Instructions</h3>
+	&lt;div data-magic="marquee"&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;a class="back"&gt;Back&lt;/a&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Item&lt;/li&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;a class="next"&gt;Next&lt;/a&gt;<br />
+	&lt;/div&gt;		
+	<h3>Examples</h3>		
+	<div class="marquee" data-magic="marquee">
+		<a href="#" class="back">Back</a>
+		<div class="wrap">
+			<ul>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
 		</div>
-		</li><li><h2>Marquee</h2>
-		<h3>Instructions</h3>
-&lt;div data-magic="marquee"&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;a class="back"&gt;Back&lt;/a&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Item&lt;/li&gt;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-&nbsp;&nbsp;&nbsp;&lt;a class="next"&gt;Next&lt;/a&gt;<br />
-&lt;/div&gt;		
-		<h3>Examples</h3>		
-		<div class="marquee" data-magic="marquee">
-			<a href="#" class="back">Back</a>
-			<div class="wrap">
-				<ul>
-					<li></li>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul>
-			</div>
-			<a href="#" class="next">Next</a>
-		</div>
-	</li>
+		<a href="#" class="next">Next</a>
+	</div>
+</li>
 <li><h2>Toggle Image</h2>
-<h3>Instructions</h3>
-&lt;img data-magic="btn"&gt;
-		<h3>Examples</h3>		
-		<a><img src="images/demo.png" data-magic="btn" /></a>
+	<h3>Instructions</h3>
+	&lt;img data-magic="btn"&gt;
+	<h3>Examples</h3>		
+	<a><img src="images/demo.png" data-magic="btn" /></a>
+</li>
+<li><h2>Loading</h2>
+	<h3>Instructions</h3>
+	&lt;div data-magic="load"&gt;
+	<h3>Examples</h3>		
+	<div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div>
 </li>
 <li><h2>About</h2>
-<small>
-Magic Plugins v0.0.0<br />
-http://a.cxm.tw/<br />
-Copyright 2013<br />
-Released under the MIT license<br />
-https://github.com/syuemingfang/magic<br />
-Date: Thu Jun 13 2013 14:40:00 GMT+0800 (Central Standard Time)<br />
-</small>
+	<small>
+		Magic Plugins v0.0.0<br />
+		http://a.cxm.tw/<br />
+		Copyright 2013<br />
+		Released under the MIT license<br />
+		https://github.com/syuemingfang/magic<br />
+		Date: Thu Jun 13 2013 14:40:00 GMT+0800 (Central Standard Time)<br />
+	</small>
 </li>
 </ul>
 
