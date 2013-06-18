@@ -9,13 +9,13 @@
 		else
 			$(this).html(str)
 	}
-	$.fn.mc_load=function(options){
+	$.fn.mg_image=function(options){
 		var settings={
 			obj:{
 				container: "ul"
 			},
 			animate: "fade",
-			mode: "none",
+			mode: "lazy",
 			animateSpeed: 500
 		}
 		var set=$.extend(settings, options);
@@ -25,23 +25,18 @@
 			}
 		);
 		function initialize(that, set){
-			var obj={
-				container: that.find(set.obj.container)		
-			},
-			html=null,
-			scrollTop=null,
-			height=null;
-			html=that.html(),
-			offset=0;
-			that.html("Loading");
+			var ready=false;
 			exec(that);
-			height=$(window).height();
-			$(window).scroll(function(){exec(that)});
+			if(set.mode == "lazy"){
+				$(window).scroll(
+					function(){
+						exec(that)
+					}
+				);
+			}
 			function exec(that){
 				if(set.mode == "lazy"){
-					var pos=$(document).scrollTop();
-					offset=that.offset();
-					if(offset.top < parseInt(pos+height, 10)){
+					if(that.offset().top < parseInt($(document).scrollTop()+$(window).height(), 10)){
 						execThis(that);
 					}
 				}	
@@ -49,28 +44,23 @@
 					execThis(that);
 				}
 				function execThis(that){
-					if(that.complete == true){
-						that.fadeOut(set.animateSpeed/2,
-							function(){
-								that.html(html);
-								that.fadeIn(set.animateSpeed/2)	
-							}
-						);		
-					} else{
-						this.onload=function(){
+					if(ready==true) return;
+					that.ready(
+						function(){
 							that.fadeOut(set.animateSpeed/2,
 								function(){
-									that.html(html);
-									that.fadeIn(set.animateSpeed/2)	
+									that.attr("src", that.attr("data-magic-src"));
+									that.fadeIn(set.animateSpeed/2);
+									ready=true;
 								}
-							);	
+							);
 						}
-					}
+					);
 				}
 			}
 		}
 	}
-	$.fn.mc_menu=function(options){
+	$.fn.mg_view=function(options){
 		var settings={
 			obj:{
 				container: "ul",
@@ -92,15 +82,15 @@
 				item: that.find(set.obj.item)			
 			};
 			obj.container.hide();
-			obj.item.click(
-				function(){
-					if(!$(this).find("a").attr("href")) return
-					location.href=$(this).find("a").attr("href");
-				}
-			);
 			obj.item.hover(
 				function(){						
 					$(this).children(set.obj.container).fadeIn(set.animateSpeed);
+					$(this).children(set.obj.container).children(set.obj.item).click(
+						function(){
+							if(!$(this).children("a").attr("href")) return
+							location.href=$(this).children("a").attr("href");
+						}
+					);
 				},
 				function(){				
 					$(this).children(set.obj.container).fadeOut(set.animateSpeed);
@@ -108,7 +98,45 @@
 			);
 		}
 	}
-	$.fn.mc_scrollbar=function(options){
+	$.fn.mg_menu=function(options){
+		var settings={
+			obj:{
+				container: "ul",
+				item: "li"
+			},
+			defaultCSS: true,
+			animate: "fade",
+			animateSpeed: 500
+		}
+		var set=$.extend(settings, options);
+		return this.each(
+			function(){
+				initialize($(this), set);
+			}
+		);
+		function initialize(that, set){
+			var obj={
+				container: that.find(set.obj.container),
+				item: that.find(set.obj.item)			
+			};
+			obj.container.hide();
+			obj.item.hover(
+				function(){						
+					$(this).children(set.obj.container).fadeIn(set.animateSpeed);
+					$(this).children(set.obj.container).children(set.obj.item).click(
+						function(){
+							if(!$(this).children("a").attr("href")) return
+							location.href=$(this).children("a").attr("href");
+						}
+					);
+				},
+				function(){				
+					$(this).children(set.obj.container).fadeOut(set.animateSpeed);
+				}
+			);
+		}
+	}
+	$.fn.mg_scrollbar=function(options){
 		// Scrollbar  //
 		var settings={
 			obj:{
@@ -261,7 +289,7 @@
 			}
 		}
 	}
-	$.fn.mc_change=function(options){
+	$.fn.mg_change=function(options){
 		// Change //
 		var settings={
 			bind: "mouseenter",
@@ -322,7 +350,7 @@
 					case "css":
 					that=$(this);
 					var img=that.css("background-image");
-					var newImg=$.fn.mc_btn.s1(img,set.type,set.name);
+					var newImg=$.fn.mg_btn.s1(img,set.type,set.name);
 					that.css("background-image",newImg);
 					$(this).on("mouseleave",
 						function(){
@@ -359,7 +387,7 @@
 			}
 		);
 	};
-	$.fn.mc_marquee=function(options){
+	$.fn.mg_marquee=function(options){
 		// Marquee //
 		var settings={
 			obj:{
@@ -645,10 +673,10 @@
 		}
 	};
 })(jQuery);
-$(document).ready(function() {	
-	$("*[data-magic=load]").mc_load();
-	$("*[data-magic=btn]").mc_change();
-	$("*[data-magic=menu]").mc_menu();
-	$("*[data-magic=scrollbar]").mc_scrollbar();
-	$("*[data-magic=marquee]").mc_marquee();
+$(document).ready(function() {
+	$("*[data-magic-src]").mg_image();	
+	$("*[data-magic=btn]").mg_change();
+	$("*[data-magic=menu]").mg_menu();
+	$("*[data-magic=scrollbar]").mg_scrollbar();
+	$("*[data-magic=marquee]").mg_marquee();
 });
