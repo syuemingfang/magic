@@ -9,6 +9,98 @@
 		else
 			$(this).html(str)
 	}
+	$.fn.mg_fixed=function(options){
+		var settings={
+			wrap: "window",
+			animate: "slide",
+			start:{
+				top: "0",		
+				left: "0",						
+				target: null,
+			},
+			end:{
+				top: "99999",		
+				left: "99999",						
+				target: ".marquee",
+			},
+			animateSpeed: 50
+		}
+		var set=$.extend(settings, options);
+		return this.each(
+			function(){
+				initialize($(this), set);
+			}
+		);
+		function initialize(that, set){
+			var regex=/px/gi,
+			isComplete=[],
+			start={
+				top:null,
+				left:null
+			},
+			end={
+				top:null,
+				left:null
+			},
+			top=parseInt(that.css("top").replace(regex, ""), 10),
+			left=parseInt(that.css("left").replace(regex, ""), 10);
+			
+
+			if(set.start.target){
+				start.top=set.start.target.offsetTop;
+				start.left=set.start.target.offsetLeft;
+			}
+			else{
+				start.top=set.start.top;
+				start.left=set.start.left;				
+			}
+			exec(that);
+			if(set.wrap == "window"){
+				$(window).scroll(
+					function(){
+						isComplete[that]=true;
+						exec(that);
+					}
+				);
+			}
+			else{
+				$(set.wrap).scroll(
+					function(){
+						isComplete[that]=true;
+						exec(that, set.wrap);
+					}
+				);
+			}
+			function exec(that, target){
+				if(!target) target=$(document);
+				if(!isComplete[that]) return;
+				isComplete[that]=false;
+				if(set.end.target){
+		 			end.top=$(set.end.target)[0].offsetTop;
+					end.left=$(set.end.target)[0].offsetLeft;
+				}
+				else{
+					end.top=set.end.top;
+					end.left=set.end.left;				
+				}
+				switch(set.animate){
+					case "slide":
+					if((target.scrollTop() > start.top) && (target.scrollTop()+top+that.outerHeight(true) < end.top)) that.animate({"top": target.scrollTop()+top+"px"}, set.animateSpeed,
+						function(){
+							isComplete[that]=true;
+						}
+					);
+					if((target.scrollLeft() > start.left) && (target.scrollLeft()+left+that.outerWidth(true) < end.left)) that.animate({"left": target.scrollLeft()+left+"px"}, set.animateSpeed,
+						function(){
+							isComplete[that]=true;
+						}
+					);
+					break;
+				}
+				
+			}
+		}
+	}
 	$.fn.mg_image=function(options){
 		var settings={
 			obj:{
@@ -16,6 +108,7 @@
 			},
 			animate: "fade",
 			mode: "lazy",
+			attr: "data-magic.src",
 			animateSpeed: 500
 		}
 		var set=$.extend(settings, options);
@@ -30,7 +123,7 @@
 			if(set.mode == "lazy"){
 				$(window).scroll(
 					function(){
-						exec(that)
+						exec(that);
 					}
 				);
 			}
@@ -49,7 +142,7 @@
 						function(){
 							that.fadeOut(set.animateSpeed/2,
 								function(){
-									that.attr("src", that.attr("data-magic-src"));
+									that.attr("src", that.attr(set.attr));
 									that.fadeIn(set.animateSpeed/2);
 									ready=true;
 								}
@@ -63,11 +156,14 @@
 	$.fn.mg_view=function(options){
 		var settings={
 			obj:{
-				container: "ul",
-				item: "li"
+				wrap: ".wrap",
+				container: ".container",
+				item: "a",				
+				currentClass: "current"
 			},
 			defaultCSS: true,
 			animate: "fade",
+			autoPlay: true,
 			animateSpeed: 500
 		}
 		var set=$.extend(settings, options);
@@ -78,22 +174,24 @@
 		);
 		function initialize(that, set){
 			var obj={
+				wrap: that.find(set.obj.wrap),	
 				container: that.find(set.obj.container),
-				item: that.find(set.obj.item)			
+				item: that.find(set.obj.item),
+				link: that.find("a")							
 			};
-			obj.container.hide();
-			obj.item.hover(
-				function(){						
-					$(this).children(set.obj.container).fadeIn(set.animateSpeed);
-					$(this).children(set.obj.container).children(set.obj.item).click(
+			obj.wrap.hide();
+			obj.link.click(
+				function(){	
+					if($(this).attr("href").match(/\#/) == null) return
+					obj.item.removeClass(set.obj.currentClass);	
+					$(this).addClass(set.obj.currentClass);
+					var href=$(this).attr("href");
+					obj.container.fadeOut(set.animateSpeed/2,
 						function(){
-							if(!$(this).children("a").attr("href")) return
-							location.href=$(this).children("a").attr("href");
+							obj.container.html($(href).html())
+							obj.container.fadeIn(set.animateSpeed/2);
 						}
 					);
-				},
-				function(){				
-					$(this).children(set.obj.container).fadeOut(set.animateSpeed);
 				}
 			);
 		}
@@ -387,7 +485,7 @@
 			}
 		);
 	};
-	$.fn.mg_marquee=function(options){
+	$.fn.mg_slideshow=function(options){
 		// Marquee //
 		var settings={
 			obj:{
@@ -398,8 +496,15 @@
 				text: "article",
 				back: ".back",
 				next: ".next",
+				page:{
+					wrap: ".page",
+					item: "a",
+					currentClass: "current",
+					autoGeneration: true,
+					showIndex: true
+				}	
 			},
-			animate: "silde", //Option: silde, fade
+			animate: "slide", //Option: slide, fade
 			animateSpeed: 1000,
 			width: "auto",
 			height: "auto",
@@ -422,9 +527,14 @@
 		function initialize(that, set){
 			var obj={
 				wrap:that.find(set.obj.wrap),
-				container:that.find(set.obj.container),
-				item:that.find(set.obj.item),
+				container:that.find(set.obj.wrap).find(set.obj.container),
+				item:that.find(set.obj.wrap).find(set.obj.container).find(set.obj.item),
 				caption:that.find(set.obj.caption),
+				page:{
+					wrap:that.find(set.obj.page.wrap),
+					item:that.find(set.obj.page.wrap).find(set.obj.page.item),
+					currentClass:that.find(set.obj.page.wrap).find(set.obj.page.currentClass)				
+				},
 				text:that.find(set.obj.text),
 				back:that.find(set.obj.back),
 				next:that.find(set.obj.next)
@@ -434,7 +544,7 @@
 			axis=null,
 			moveLength=null,
 			mPos=null,
-			index=null,
+			index=0,
 			html=null,
 			timer=[],
 			isComplete=[],
@@ -442,6 +552,7 @@
 			containerSpace=[],			
 			playLength=[],
 			itemLength=[],
+			href=null,
 			cPos=[];
 			// Initialize //
 			isComplete[that]=true;
@@ -518,7 +629,23 @@
 					html=obj.container.html();
 					obj.container.html(html+html);
 				}
-			}			
+			}
+			if(set.obj.page.autoGeneration){
+				// 自動產生分頁 //
+				var html="", script=null;
+				for(var i=1; i <= obj.item.length; i++){
+					if(set.obj.page.item == "a"){
+						script="href='#";
+					}
+					else script="class='";
+					if(set.obj.page.showIndex)
+						html+="<"+set.obj.page.item+" "+script+i+"'>"+i+"</"+set.obj.page.item+">";
+					else 
+						html+="<"+set.obj.page.item+" "+script+i+"'></"+set.obj.page.item+">";
+				}
+				obj.page.wrap.html(html);
+				obj.page.item=that.find(set.obj.page.wrap).find(set.obj.page.item);
+			}
 			obj.container.hover(
 				function(){
 					// Stop When Mouse Over //
@@ -527,7 +654,7 @@
 				}, function(){
 					// Start When Mouse Out //
 					isHover=false;
-					if(set.autoPlay == true) timer[that]=setTimeout(move, set.timeSpeed);
+					if(set.autoPlay == true) timer[that]=setTimeout(function(){move()}, set.timeSpeed);
 				}
 			);
 			that.find(obj.back).click(
@@ -542,9 +669,18 @@
 					return false;				
 				}
 			);
+			that.find(obj.page.item).click(
+				function(evt){
+					href=$(this).attr("href").match(/\d/gi);
+					exec(evt, playLength[that]*((index+1)-href));	
+					return false;				
+				}
+			);
 			function exec(evt, moveLength){
 				if((!isComplete[that]) || (isHover)) return;
 				isComplete[that]=false;
+				if(obj.page.wrap)
+					obj.page.item.removeClass(set.obj.page.currentClass);
 				if(set.autoPlay == true) clearTimeout(timer[that]);			
 				if(axis == "horizontal"){
 					cPos[that]=parseInt(obj.container.css("left").replace(regex, ""), 10); //Current Position
@@ -562,9 +698,9 @@
 						if(cPos[that] > 0) mPos=0-containerLength[that]+moveLength;
 					}
 					switch(set.animate){
-						case "silde":
+						case "slide":
 						obj.container.animate({left:mPos+"px"}, set.animateSpeed, "linear", function(){
-							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(move, set.timeSpeed);
+							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(function(){move()}, set.timeSpeed);
 							isComplete[that]=true;	
 								cPos[that]=parseInt(obj.container.css("left").replace(regex, ""), 10); //Reset Current Position
 								index=Math.abs(cPos[that]/itemLength[that]); //Get Index for Caption
@@ -578,8 +714,8 @@
 							});		
 						break;
 						case "fade":
-						obj.container.fadeOut(set.animateSpeed).animate({left:mPos+"px"}, set.animateSpeed, function(){
-							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(move, set.timeSpeed);
+						obj.container.fadeOut(set.animateSpeed/2).animate({left:mPos+"px"}, set.animateSpeed, function(){
+							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(function(){move()}, set.timeSpeed);
 							isComplete[that]=true;	
 								cPos[that]=parseInt(obj.container.css("left").replace(regex, ""), 10); //Reset Current Position
 								index=((0-cPos[that])/itemLength[that]); //Get Index for Caption
@@ -589,8 +725,8 @@
 									if(Math.abs(index) > obj.item.length-1) index=0;
 								}
 								else if(index < 0) index=0;
-								obj.caption.html(obj.item.eq(index).find(obj.text).html()).fadeIn(set.animateSpeed);	
-							}).fadeIn(set.animateSpeed);			
+								obj.caption.html(obj.item.eq(index).find(obj.text).html()).fadeIn(set.animateSpeed/2);
+							}).fadeIn(set.animateSpeed/2);
 						break;
 					}
 				}
@@ -609,9 +745,9 @@
 						if(cPos[that] > 0) mPos=0-containerLength[that]+moveLength;	
 					}
 					switch(set.animate){
-						case "silde":
+						case "slide":
 						obj.container.animate({top:mPos+"px"}, set.animateSpeed, function(){
-							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(move, set.timeSpeed);
+							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(function(){move()}, set.timeSpeed);
 							isComplete[that]=true;	
 								cPos[that]=parseInt(obj.container.css("top").replace(regex, ""), 10); //Reset Current Position
 								index=Math.abs(cPos[that]/itemLength[that]); //Get Index for Caption;
@@ -626,7 +762,7 @@
 						break;
 						case "fade":
 						obj.container.fadeOut(set.animateSpeed).animate({top:mPos+"px"}, set.animateSpeed, function(){
-							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(move, set.timeSpeed);
+							if((!isHover) && (set.autoPlay == true)) timer[that]=setTimeout(function(){move()}, set.timeSpeed);
 							isComplete[that]=true;	
 								cPos[that]=parseInt(obj.container.css("top").replace(regex,""), 10); //Reset current Position;
 								index=((0-cPos[that])/itemLength[that]); //Get Index for Caption;
@@ -644,6 +780,8 @@
 				}
 			}	
 			obj.caption.html(obj.item.eq(0).find(obj.text).html()).fadeIn(set.animateSpeed);	
+			if(obj.page.wrap)
+				obj.page.item.eq(index).addClass(set.obj.page.currentClass);
 			if(set.seamlessMode){
 				if((set.startFrom=="left") || (set.startFrom=="right")) obj.container.css("left", parseInt(0-containerLength[that]-containerSpace[that]));
 				else if((set.startFrom=="top") || (set.startFrom=="bottom")) obj.container.css("top", parseInt(0-containerLength[that]-containerSpace[that]));
@@ -669,14 +807,18 @@
 				}
 			}
 			// Open AutoPlay //
-			if(set.autoPlay == true) timer[that]=setTimeout(move, set.timeSpeed)
+			if(set.autoPlay == true) timer[that]=setTimeout(function(){move()}, set.timeSpeed)
 		}
 	};
 })(jQuery);
 $(document).ready(function() {
+
+	$("*[data-magic=fixed]").mg_fixed();	
+	$("*[data-magic=view]").mg_view();	
 	$("*[data-magic-src]").mg_image();	
 	$("*[data-magic=btn]").mg_change();
 	$("*[data-magic=menu]").mg_menu();
 	$("*[data-magic=scrollbar]").mg_scrollbar();
-	$("*[data-magic=marquee]").mg_marquee();
+	$("*[data-magic=marquee]").mg_slideshow();
+	$("*[data-magic=banner]").mg_slideshow({animate:"fade",timeSpeed:"2000"});
 });

@@ -20,6 +20,17 @@
 		line-height: 1
 
 	}
+	/* Fixed */
+	.fixed{
+		position: absolute;
+		width: 50px;
+		height: 50px;
+		padding: 10px;
+		text-align: center;
+		background-color: #ccc;
+		left: 50px;
+		top: 20px;
+	}
 	.list li{
 		border-bottom:1px #cfcfcf solid;
 		width:100%;
@@ -28,7 +39,7 @@
 		padding-bottom:30px;
 	}
 	/* Marquee */
-	.marquee ul {
+	.marquee .wrap ul {
 		list-style: none;
 		height:100px;
 	}
@@ -36,7 +47,7 @@
 		width:400px;
 		height:100px;
 	}
-	.marquee ul li {
+	.marquee .wrap ul li {
 		float: left;
 		width: 100px;
 		margin: 10px;
@@ -55,6 +66,35 @@
 		height: 200px;
 		color: #333;
 	}
+	/* Banner */
+	.banner .wrap ul {
+		list-style: none;
+		height:100px;
+	}
+	.banner .wrap{
+		width:100px;
+		height:100px;
+	}
+	.banner .wrap ul li {
+		float: left;
+		text-align: center;
+		width: 100px;
+		height: 100px;
+		margin: 10px;
+		background-color: #CCC
+	}
+	.banner .next {
+		float: left;
+		margin: 10px;
+		height: 100px;	
+		color: #333;
+	}
+	.banner .back {
+		float: left;
+		margin: 10px;
+		height: 100px;
+		color: #333;
+	}	
 	/* Scrollbar */
 	.scrollbar1, .scrollbar2{
 		float:left;
@@ -199,9 +239,55 @@
 	<script src="js/jquery-latest.js"></script>
 	<script src="js/magic.js"></script>
 </head>
-<body data-magic="lazy">
+<body>
 	<h1>Magic Plugins</h1>
 	<ul class="list">
+<li><h2>Fixed</h2>
+	<h3>Instructions</h3>
+	&lt;div data-magic="view"&gt;<br />
+	&lt;div class="wrap"&gt;<br />
+	&lt;div class="container"&gt;<br />
+	&lt;/div&gt;<br />
+	&lt;/div&gt;<br />
+	<h3>Examples</h3>		
+	<div class="fixed" data-magic="fixed">Fixed</div>
+</li>
+<li><h2>Banner</h2>
+	<h3>Instructions</h3>
+	&lt;div data-magic="banner"&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;a class="back"&gt;Back&lt;/a&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Item&lt;/li&gt;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
+	&nbsp;&nbsp;&nbsp;&lt;a class="next"&gt;Next&lt;/a&gt;<br />
+	&lt;/div&gt;		
+	<h3>Examples</h3>		
+	<div class="banner" data-magic="banner">
+		<a href="#" class="back">Back</a>
+		<div class="wrap">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+			</ul>
+		</div>
+		<a href="#" class="next">Next</a>
+		<div class="page"><a href="#1">1</a><a href="#2">2</a><a href="#3">3</a></div>
+	</div>
+</li>
+<li><h2>View</h2>
+	<h3>Instructions</h3>
+	&lt;div data-magic="view"&gt;<br />
+	&lt;div class="wrap"&gt;<br />
+	&lt;div class="container"&gt;<br />
+	&lt;/div&gt;<br />
+	&lt;/div&gt;<br />
+	<h3>Examples</h3>		
+	<div data-magic="view"><a href="#tom">Tom</a> <a href="#jack">Jack</a><div class="container">a</div><div class="wrap"><div id="tom">aa</div><div id="jack">bb</div></div></div>
+</li>
 		<li><h2>Menu</h2>
 			<h3>Instructions</h3>
 			<p>
