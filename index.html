@@ -7,40 +7,47 @@
 	body{
 		margin:0;
 		padding:0;
-		font-family: sans-serif;
+		font-family:sans-serif;
 	}
 	h2{
 		color:#44CCDD;
 	}
 	h1{
-		font-family: Serif;	
-		font-size: 1000%;
-		font-family: Serif;
-		font-weight: lighter;
-		line-height: 1
-
+		font-family:Serif;	
+		font-size:1000%;
+		font-family:Serif;
+		font-weight:lighter;
+		line-height:1
 	}
-	/* Fixed */
-	.fixed{
-		position: absolute;
-		width: 50px;
-		height: 50px;
-		padding: 10px;
-		text-align: center;
-		background-color: #ccc;
-		left: 50px;
-		top: 20px;
-	}
-	.list li{
+	.list >li{
 		border-bottom:1px #cfcfcf solid;
 		width:100%;
 		float:left;
 		padding-top:30px;
 		padding-bottom:30px;
 	}
+	/* Fixed */
+	.fixed-wrap{
+		position:relative;
+		padding: 10px;
+		width:80%;
+		height:500px;
+		overflow-x:scroll;
+		background-color:#cfcfcf;
+	}
+	.fixed{
+		position:absolute;
+		width:50px;
+		height:50px;
+		padding:10px;
+		text-align:center;
+		background-color:#ffffff;
+		left:50px;
+		top:20px;
+	}
 	/* Marquee */
 	.marquee .wrap ul {
-		list-style: none;
+		list-style:none;
 		height:100px;
 	}
 	.marquee .wrap{
@@ -48,27 +55,31 @@
 		height:100px;
 	}
 	.marquee .wrap ul li {
-		float: left;
-		width: 100px;
-		margin: 10px;
-		height: 200px;
-		background-color: #333
+		float:left;
+		width:100px;
+		margin:10px;
+		height:200px;
+		background-color:#333
 	}
 	.marquee .next {
-		float: left;
-		margin: 10px;
-		height: 200px;	
-		color: #333;
+		float:left;
+		margin:10px;
+		height:200px;	
+		color:#333;
 	}
 	.marquee .back {
-		float: left;
-		margin: 10px;
-		height: 200px;
-		color: #333;
+		float:left;
+		margin:10px;
+		height:200px;
+		color:#333;
 	}
 	/* Banner */
+	.banner {
+		float:left;
+		width: 200px;		
+	}
 	.banner .wrap ul {
-		list-style: none;
+		list-style:none;
 		height:100px;
 	}
 	.banner .wrap{
@@ -76,25 +87,59 @@
 		height:100px;
 	}
 	.banner .wrap ul li {
-		float: left;
-		text-align: center;
-		width: 100px;
-		height: 100px;
-		margin: 10px;
-		background-color: #CCC
+		float:left;
+		text-align:center;
+		width:100px;
+		height:100px;
+		background-color:#cfcfcf
 	}
 	.banner .next {
-		float: left;
-		margin: 10px;
-		height: 100px;	
-		color: #333;
+		float:left;
+		margin:10px;
+		width:30px;
+		height:100px;	
+		color:#333;
 	}
 	.banner .back {
-		float: left;
-		margin: 10px;
-		height: 100px;
-		color: #333;
+		float:left;
+		margin:10px;
+		width:30px;
+		height:100px;
+		color:#333;
 	}	
+	.banner .page-wrap{
+		float:left;
+		margin:10px;
+		width: 200px;	
+		text-align: center;
+		color:#333;
+	}
+	.banner .page-wrap ul{
+		list-style:none;
+		margin:0;
+		padding:0;
+	}
+	.banner .page-wrap li{
+		display: inline-block;
+		text-align: center;
+		margin:5px;
+		width:20px;
+		height:20px;
+		border:1px #ccc solid
+	}
+	.banner .page-wrap li a{
+		color: #333;
+		text-decoration: none;
+	}
+	.banner .page-wrap .page-current{
+		color: #fff;
+		background-color: #333;
+	}
+	.banner .page-wrap .page-current a{
+		color: #fff;
+		background-color: #333;
+	}
+		
 	/* Scrollbar */
 	.scrollbar1, .scrollbar2{
 		float:left;
@@ -102,138 +147,138 @@
 		width:100%;
 	}
 	.scrollbar1 .scrollbar {
-		position: absolute;
-		display: block;
-		width: 10px;
-		height: 30px;
-		background-color: #ccc;
+		position:absolute;
+		display:block;
+		width:10px;
+		height:30px;
+		background-color:#cfcfcf;
 	}
 	.scrollbar1 .track {
-		position: relative;
-		overflow: hidden;
-		width: 10px;
-		height: 100px;
-		background-color: #efefef;
+		position:relative;
+		overflow:hidden;
+		width:10px;
+		height:100px;
+		background-color:#efefef;
 	}
 	.scrollbar1 .next {
-		width: 10px;
-		height: 10px;
-		background-color: #333;
+		width:10px;
+		height:10px;
+		background-color:#333;
 	}
 	.scrollbar1 .back {
-		width: 10px;
-		height: 10px;
-		background-color: #333;
+		width:10px;
+		height:10px;
+		background-color:#333;
 	}
 	.scrollbar1 .wrap {
-		float: left;
-		width: 100px;
-		height: 120px;
+		float:left;
+		width:100px;
+		height:120px;
 		border:1px #ccc solid;		
-		box-sizing: border-box;
-		overflow: hidden;
+		box-sizing:border-box;
+		overflow:hidden;
 	}
 	.scrollbar1 .container {
-		width: 100px;
-		height: 500px;
-		background-color: #eee;
+		width:100px;
+		height:500px;
+		background-color:#eee;
 	}
 
 	/* Scrollbar2 */
 	.scrollbar2 .scrollbar {
-		position: absolute;
-		display: block;
-		width: 40px;
-		height: 10px;
-		background-color: #ccc;
+		position:absolute;
+		display:block;
+		width:40px;
+		height:10px;
+		background-color:#cfcfcf;
 	}
 	.scrollbar2 .track {
-		float: left;
-		position: relative;
-		overflow: hidden;
-		width: 90px;
-		height: 10px;
-		background-color: #efefef;
+		float:left;
+		position:relative;
+		overflow:hidden;
+		width:90px;
+		height:10px;
+		background-color:#efefef;
 	}
 	.scrollbar2 .next {
-		float: left;
-		width: 10px;
-		height: 10px;
-		background-color: #333;
+		float:left;
+		width:10px;
+		height:10px;
+		background-color:#333;
 	}
 	.scrollbar2 .back {
-		float: left;
-		width: 10px;
-		height: 10px;
-		background-color: #333;
+		float:left;
+		width:10px;
+		height:10px;
+		background-color:#333;
 	}
 	.scrollbar2 .wrap {
-		float: left;
-		width: 110px;
-		height: 100px;
+		float:left;
+		width:110px;
+		height:100px;
 		border:1px #ccc solid;
-		box-sizing: border-box;
-		overflow: hidden;
+		box-sizing:border-box;
+		overflow:hidden;
 	}
 	.scrollbar2 .container {
-		width: 500px;
-		height: 100px;
-		background-color: #eee;
+		width:500px;
+		height:100px;
+		background-color:#eee;
 	}
 
 	/* Menu */
 	.menu {
-		list-style: none;
+		list-style:none;
 		margin:0;
 		padding:0;
 	}
 	.menu >li{
 		float:left;
-		background-color: #ffffff;
-		position: relative;
-		border-right:1px #ccc solid;
-		border-top:1px #ccc solid;
-		border-bottom:1px #ccc solid;
+		background-color:#ffffff;
+		position:relative;
+		border-right:1px #cfcfcf solid;
+		border-top:1px #cfcfcf solid;
+		border-bottom:1px #cfcfcf solid;
 		width:200px;
-		padding: 5px;
+		padding:5px;
 		height:20px;
 	}
 	.menu >li:first-child{
 		border-left:1px #ccc solid;
 	}
 	.menu >li >ul{
-		position: absolute;
+		position:absolute;
 		top:30px;
 		left:-1px;
 		width:200px;
-		list-style: none;
+		list-style:none;
 		margin:0;
 		padding:0;	
 	}
 	.menu >li >ul >li{
-		background-color: #ffffff;
-		border-right:1px #ccc solid;
-		border-left:1px #ccc solid;
-		border-bottom:1px #ccc solid;
+		background-color:#ffffff;
+		border-right:1px #cfcfcf solid;
+		border-left:1px #cfcfcf solid;
+		border-bottom:1px #cfcfcf solid;
 		width:200px;
-		padding: 5px;
+		padding:5px;
 	}
 	.menu >li >ul >li >ul {
-		position: absolute;
+		position:absolute;
 		top:0px;
 		left:211px;
 		width:200px;
-		list-style: none;
+		list-style:none;
 		margin:0;
 		padding:0;	
 	}
 	.menu >li >ul >li >ul >li{
-		background-color: #ffffff;
-		border-right:1px #ccc solid;
-		border-left:1px #ccc solid;
-		border-bottom:1px #ccc solid;
+		background-color:#ffffff;
+		border-right:1px #cfcfcf solid;
+		border-left:1px #cfcfcf solid;
+		border-bottom:1px #cfcfcf solid;
 		width:200px;
-		padding: 5px;
+		padding:5px;
 	}
 	</style>
 	<script src="js/jquery-latest.js"></script>
@@ -242,27 +287,31 @@
 <body>
 	<h1>Magic Plugins</h1>
 	<ul class="list">
+<li><h2>Code</h2>
+	<h3>Instructions</h3>
+	<code data-magic="code"><code data-magic="code">
+	</code></code>
+	<h3>Examples</h3>		
+	<code data-magic="code"><div>test</div></code>
+</li>	
 <li><h2>Fixed</h2>
 	<h3>Instructions</h3>
-	&lt;div data-magic="view"&gt;<br />
-	&lt;div class="wrap"&gt;<br />
-	&lt;div class="container"&gt;<br />
-	&lt;/div&gt;<br />
-	&lt;/div&gt;<br />
+	<code data-magic="code"><div data-magic="fixed">
+	</div></code>
 	<h3>Examples</h3>		
-	<div class="fixed" data-magic="fixed">Fixed</div>
+	<div class="fixed-wrap"><div><div class="fixed" data-magic="fixed">Fixed</div></div><p>Start</p><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><p>End</p></div>
 </li>
 <li><h2>Banner</h2>
 	<h3>Instructions</h3>
-	&lt;div data-magic="banner"&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;a class="back"&gt;Back&lt;/a&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Item&lt;/li&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;a class="next"&gt;Next&lt;/a&gt;<br />
-	&lt;/div&gt;		
+	<code data-magic="code"><div data-magic="banner">
+	   <a class="back">Back</a>
+	   <div class="wrap">
+	      <ul><br />
+	         <li>Item</li>
+	      </ul>
+	   </div>
+	   <a class="next">Next</a>
+	</div></code>
 	<h3>Examples</h3>		
 	<div class="banner" data-magic="banner">
 		<a href="#" class="back">Back</a>
@@ -275,29 +324,29 @@
 			</ul>
 		</div>
 		<a href="#" class="next">Next</a>
-		<div class="page"><a href="#1">1</a><a href="#2">2</a><a href="#3">3</a></div>
+		<ul class="page-wrap"><li class="page-item1">1</li><li class="page-item2">2</li><li class="page-item3">3</li></div>
 	</div>
 </li>
 <li><h2>View</h2>
 	<h3>Instructions</h3>
-	&lt;div data-magic="view"&gt;<br />
-	&lt;div class="wrap"&gt;<br />
-	&lt;div class="container"&gt;<br />
-	&lt;/div&gt;<br />
-	&lt;/div&gt;<br />
+	<code data-magic="code"><div data-magic="view">
+	 <div class="wrap">
+	  <div class="container">
+	  </div>
+	 </div>
+	</div></code>
 	<h3>Examples</h3>		
 	<div data-magic="view"><a href="#tom">Tom</a> <a href="#jack">Jack</a><div class="container">a</div><div class="wrap"><div id="tom">aa</div><div id="jack">bb</div></div></div>
 </li>
 		<li><h2>Menu</h2>
 			<h3>Instructions</h3>
-			<p>
-				&lt;ul data-magic="menu"&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;li&gt;Father<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Son&lt;/li&gt;<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;/li&gt;<br />
-				&lt;/ul&gt;</p>
+			<p><code data-magic="code"><ul data-magic="menu">
+				   <li>Father
+				      <ul>
+				         <li>Son</li>
+				      </ul>
+				   </li>
+				</ul></code></p>
 				<h3>Examples</h3>
 				<ul class="menu" data-magic="menu">
 					<li><a href="http://yahoo.com">Father</a>
@@ -323,16 +372,16 @@
 			</li><li><h2>Scrollbar</h2>
 			<h3>Instructions</h3>
 			<p>
-				&lt;div data-magic="scrollbar"&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="container"&gt;Something&lt;/div&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;div class="back"&gt;&lt;/div&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;div class="track"&gt;<br />
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;div class="scrollbar"&gt;&lt;/div&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-				&nbsp;&nbsp;&nbsp;&lt;div class="next"&gt;&lt;/div&gt;<br />
-				&lt;/div&gt;
+				<code data-magic="code"><div data-magic="scrollbar">
+				   <div class="wrap">
+				      <div class="container">Something</div>
+				   </div>
+				   <div class="back"></div>
+				   <div class="track">
+				      <div class="scrollbar"></div>
+				   </div>
+				   <div class="next"></div>
+				</div></code>
 			</p>
 			<h3>Examples</h3>
 			<div class="scrollbar1" data-magic="scrollbar">
@@ -362,15 +411,15 @@
 		</div>
 	</li><li><h2>Marquee</h2>
 	<h3>Instructions</h3>
-	&lt;div data-magic="marquee"&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;a class="back"&gt;Back&lt;/a&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;div class="wrap"&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;ul&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;li&gt;Item&lt;/li&gt;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/ul&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;/div&gt;<br />
-	&nbsp;&nbsp;&nbsp;&lt;a class="next"&gt;Next&lt;/a&gt;<br />
-	&lt;/div&gt;		
+	<code data-magic="code"><div data-magic="marquee">
+	   <a class="back">Back</a>
+	   <div class="wrap">
+	      <ul>
+	         <li>Item</li>
+	      </ul>
+	   </div>
+	   <a class="next">Next</a>
+	</div></code>		
 	<h3>Examples</h3>		
 	<div class="marquee" data-magic="marquee">
 		<a href="#" class="back">Back</a>
@@ -387,13 +436,13 @@
 </li>
 <li><h2>Toggle Image</h2>
 	<h3>Instructions</h3>
-	&lt;img data-magic="btn"&gt;
+	<code data-magic="code"><img data-magic="btn" /></code>
 	<h3>Examples</h3>		
 	<a><img src="images/demo.png" data-magic="btn" /></a>
 </li>
 <li><h2>Loading</h2>
 	<h3>Instructions</h3>
-	&lt;div data-magic="load"&gt;
+	<code data-magic="code"><img data-magic="load" /></code>
 	<h3>Examples</h3>		
 	<div data-magic="load">sssssssssss</div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="GGG" data-magic-src="http://attach.bbs.miui.com/forum/201305/17/004418offfsgzifbl8ggsb.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div><div data-magic="load"><img src="http://img03.taobaocdn.com/bao/uploaded/i4/13699023960920729/T1OhWNXuBaXXXXXXXX_!!0-item_pic.jpg_b.jpg"></div>
 </li>

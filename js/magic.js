@@ -11,7 +11,7 @@
 	}
 	$.fn.mg_fixed=function(options){
 		var settings={
-			wrap: "window",
+			wrap: "auto",
 			animate: "slide",
 			start:{
 				top: "0",		
@@ -44,8 +44,17 @@
 			},
 			top=parseInt(that.css("top").replace(regex, ""), 10),
 			left=parseInt(that.css("left").replace(regex, ""), 10);
-			
-
+			if(set.wrap == "auto"){
+				var parent=that;
+				var i=0;
+				while(parent.css("position") != "relative"){
+					parent=parent.parent();
+					i++;
+					if(parent[0].tagName == "BODY") break;
+				}
+				if(!parent) parent="window";
+				set.wrap=parent;
+			}		
 			if(set.start.target){
 				start.top=set.start.target.offsetTop;
 				start.left=set.start.target.offsetLeft;
@@ -85,16 +94,18 @@
 				}
 				switch(set.animate){
 					case "slide":
-					if((target.scrollTop() > start.top) && (target.scrollTop()+top+that.outerHeight(true) < end.top)) that.animate({"top": target.scrollTop()+top+"px"}, set.animateSpeed,
-						function(){
-							isComplete[that]=true;
-						}
-					);
-					if((target.scrollLeft() > start.left) && (target.scrollLeft()+left+that.outerWidth(true) < end.left)) that.animate({"left": target.scrollLeft()+left+"px"}, set.animateSpeed,
-						function(){
-							isComplete[that]=true;
-						}
-					);
+					if((target.scrollTop() >= start.top) && (target.scrollTop()+top+that.outerHeight(true) < end.top))
+						that.animate({"top": target.scrollTop()+top+"px"}, set.animateSpeed,
+							function(){
+								isComplete[that]=true;
+							}
+						);
+					if((target.scrollLeft() >= start.left) && (target.scrollLeft()+left+that.outerWidth(true) < end.left))
+						that.animate({"left": target.scrollLeft()+left+"px"}, set.animateSpeed,
+							function(){
+								isComplete[that]=true;
+							}
+						);
 					break;
 				}
 				
@@ -151,6 +162,28 @@
 					);
 				}
 			}
+		}
+	}
+	$.fn.mg_replace=function(options){
+		var settings={
+			mapping:{
+				"\<":"A",
+				"\>":"&gt;"
+			}
+		}
+		var set=$.extend(settings, options);
+		return this.each(
+			function(){
+				initialize($(this), set);
+			}
+		);
+		function initialize(that, set){
+			html=that.html();
+			for(var i in set.mapping){
+				var regexp=new RegExp(i,"g");
+				html=html.replace(regexp, set.mapping[i]);
+			}
+			that.html(html);
 		}
 	}
 	$.fn.mg_view=function(options){
@@ -497,15 +530,16 @@
 				back: ".back",
 				next: ".next",
 				page:{
-					wrap: ".page",
-					item: "a",
-					currentClass: "current",
+					wrap: ".page-wrap",
+					item: "li",
+					itemClass: "page-item",
+					currentClass: "page-current",
 					autoGeneration: true,
 					showIndex: true
 				}	
 			},
 			animate: "slide", //Option: slide, fade
-			animateSpeed: 1000,
+			animateSpeed: 500,
 			width: "auto",
 			height: "auto",
 			autoPlay: true,
@@ -532,8 +566,7 @@
 				caption:that.find(set.obj.caption),
 				page:{
 					wrap:that.find(set.obj.page.wrap),
-					item:that.find(set.obj.page.wrap).find(set.obj.page.item),
-					currentClass:that.find(set.obj.page.wrap).find(set.obj.page.currentClass)				
+					item:that.find(set.obj.page.wrap).find(set.obj.page.item),				
 				},
 				text:that.find(set.obj.text),
 				back:that.find(set.obj.back),
@@ -634,14 +667,10 @@
 				// 自動產生分頁 //
 				var html="", script=null;
 				for(var i=1; i <= obj.item.length; i++){
-					if(set.obj.page.item == "a"){
-						script="href='#";
-					}
-					else script="class='";
 					if(set.obj.page.showIndex)
-						html+="<"+set.obj.page.item+" "+script+i+"'>"+i+"</"+set.obj.page.item+">";
+						html+="<"+set.obj.page.item+" class='"+set.obj.page.itemClass+i+"'><a href='#"+set.obj.page.itemClass+i+"'>"+i+"</a></"+set.obj.page.item+">";
 					else 
-						html+="<"+set.obj.page.item+" "+script+i+"'></"+set.obj.page.item+">";
+						html+="<"+set.obj.page.item+" class='"+set.obj.page.itemClass+i+"'></"+set.obj.page.item+">";
 				}
 				obj.page.wrap.html(html);
 				obj.page.item=that.find(set.obj.page.wrap).find(set.obj.page.item);
@@ -671,7 +700,7 @@
 			);
 			that.find(obj.page.item).click(
 				function(evt){
-					href=$(this).attr("href").match(/\d/gi);
+					href=Number($(this).attr("class").match(/\d/gi));
 					exec(evt, playLength[that]*((index+1)-href));	
 					return false;				
 				}
@@ -679,8 +708,11 @@
 			function exec(evt, moveLength){
 				if((!isComplete[that]) || (isHover)) return;
 				isComplete[that]=false;
-				if(obj.page.wrap)
+				if(obj.page.wrap){
+					if(!index) index=0;
 					obj.page.item.removeClass(set.obj.page.currentClass);
+					obj.page.item.eq(index).addClass(set.obj.page.currentClass);
+				}
 				if(set.autoPlay == true) clearTimeout(timer[that]);			
 				if(axis == "horizontal"){
 					cPos[that]=parseInt(obj.container.css("left").replace(regex, ""), 10); //Current Position
@@ -771,6 +803,7 @@
 									// Seamless Mode //											
 									index=index-obj.item.length;
 									if(Math.abs(index) > obj.item.length-1) index=0;
+
 								}
 								else if(index < 0) index=0;
 								obj.caption.html(obj.item.eq(index).find(obj.text).html()).fadeIn(set.animateSpeed);		
@@ -779,9 +812,10 @@
 					}
 				}
 			}	
-			obj.caption.html(obj.item.eq(0).find(obj.text).html()).fadeIn(set.animateSpeed);	
-			if(obj.page.wrap)
-				obj.page.item.eq(index).addClass(set.obj.page.currentClass);
+			if(obj.page.wrap){
+				obj.page.item.eq(0).addClass(set.obj.page.currentClass);
+			}	
+			obj.caption.html(obj.item.eq(0).find(obj.text).html()).fadeIn(set.animateSpeed);		
 			if(set.seamlessMode){
 				if((set.startFrom=="left") || (set.startFrom=="right")) obj.container.css("left", parseInt(0-containerLength[that]-containerSpace[that]));
 				else if((set.startFrom=="top") || (set.startFrom=="bottom")) obj.container.css("top", parseInt(0-containerLength[that]-containerSpace[that]));
@@ -812,7 +846,7 @@
 	};
 })(jQuery);
 $(document).ready(function() {
-
+	$("*[data-magic=code]").mg_replace({mapping:{"\<":"&lt;","\>":"&gt;"," ":"&nbsp;","\\n":"<br />"}});
 	$("*[data-magic=fixed]").mg_fixed();	
 	$("*[data-magic=view]").mg_view();	
 	$("*[data-magic-src]").mg_image();	
