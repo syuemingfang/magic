@@ -13,15 +13,23 @@
 		var settings={
 			wrap: "auto",
 			animate: "slide",
+			door: false,
 			start:{
-				top: "0",		
-				left: "0",						
-				target: null,
+				// When Target Go Here Start //
+				top: null,		
+				left: null,				
+				obj: "auto",
 			},
 			end:{
-				top: "99999",		
-				left: "99999",						
-				target: ".marquee",
+				// When Target Go Here Stop //
+				top: null,		
+				left: null,							
+				obj: "auto",
+			},
+			pos:{
+				// Target Position //
+				top: "auto",		
+				left: "auto",	
 			},
 			animateSpeed: 50
 		}
@@ -34,6 +42,11 @@
 		function initialize(that, set){
 			var regex=/px/gi,
 			isComplete=[],
+			parent=null,
+			current={
+				top:null,
+				left:null		
+			}
 			start={
 				top:null,
 				left:null
@@ -41,33 +54,45 @@
 			end={
 				top:null,
 				left:null
-			},
-			top=parseInt(that.css("top").replace(regex, ""), 10),
-			left=parseInt(that.css("left").replace(regex, ""), 10);
+			};
+			// Set Position //
+			if(set.pos.top == "auto") set.pos.top=that.css("top");
+			if(set.pos.left == "auto") set.pos.left=that.css("left");
+			// Set Wrap //			
 			if(set.wrap == "auto"){
-				var parent=that;
-				var i=0;
+				parent=that;
 				while(parent.css("position") != "relative"){
 					parent=parent.parent();
-					i++;
 					if(parent[0].tagName == "BODY") break;
 				}
 				if(!parent) parent="window";
 				set.wrap=parent;
-			}		
-			if(set.start.target){
-				start.top=set.start.target.offsetTop;
-				start.left=set.start.target.offsetLeft;
+			}
+			// Set Current //	
+			current={
+				top:set.wrap.scrollTop(),
+				left:set.wrap.scrollLeft()
+			}
+			// Set Start Buoy //
+			if(set.start.obj == "auto") set.start.obj="window";
+			if(set.start.obj){
+				// If Object Exist, Get Object Top And Left //
+				if(set.start.obj == "window"){
+					start.top=0;
+					start.left=0;
+				} else{
+					start.top=$(set.start.obj)[0].offsetTop;
+					start.left=$(set.start.obj)[0].offsetLeft;
+				}	
 			}
 			else{
-				start.top=set.start.top;
-				start.left=set.start.left;				
+				// If Not, Get Setting Top And Left //
+				if(set.start.top) start.top=parseInt(set.start.top.replace(regex, ""), 10);
+				if(set.start.left) start.left=parseInt(set.start.left.replace(regex, ""), 10);				
 			}
-			exec(that);
 			if(set.wrap == "window"){
 				$(window).scroll(
 					function(){
-						isComplete[that]=true;
 						exec(that);
 					}
 				);
@@ -75,37 +100,39 @@
 			else{
 				$(set.wrap).scroll(
 					function(){
-						isComplete[that]=true;
 						exec(that, set.wrap);
 					}
 				);
 			}
 			function exec(that, target){
 				if(!target) target=$(document);
-				if(!isComplete[that]) return;
-				isComplete[that]=false;
-				if(set.end.target){
-		 			end.top=$(set.end.target)[0].offsetTop;
-					end.left=$(set.end.target)[0].offsetLeft;
+				// Set End Buoy //
+				if(set.end.obj == "auto") set.end.obj="window";
+				if(set.end.obj){
+					if(set.end.obj == "window"){
+						end.top=document.body.scrollHeight;
+						end.left=document.body.scrollWidth;
+					} else{
+		 				end.top=$(set.end.obj)[0].offsetTop;
+						end.left=$(set.end.obj)[0].offsetLeft;
+					}
 				}
 				else{
-					end.top=set.end.top;
-					end.left=set.end.left;				
+					if(set.end.top) end.top=parseInt(set.end.top.replace(regex, ""), 10);
+					if(set.end.left) end.left=parseInt(set.end.left.replace(regex, ""), 10);			
 				}
 				switch(set.animate){
 					case "slide":
-					if((target.scrollTop() >= start.top) && (target.scrollTop()+top+that.outerHeight(true) < end.top))
-						that.animate({"top": target.scrollTop()+top+"px"}, set.animateSpeed,
-							function(){
-								isComplete[that]=true;
-							}
-						);
-					if((target.scrollLeft() >= start.left) && (target.scrollLeft()+left+that.outerWidth(true) < end.left))
-						that.animate({"left": target.scrollLeft()+left+"px"}, set.animateSpeed,
-							function(){
-								isComplete[that]=true;
-							}
-						);
+					if((target.scrollTop() != current.top) && (target.scrollTop() >= start.top) && (target.scrollTop()+parseInt(set.pos.top.replace(regex, ""), 10)+that.outerHeight(true) < end.top)){
+						if(set.door) that.fadeIn(1000);
+						that.animate({"top": target.scrollTop()+parseInt(set.pos.top.replace(regex, ""), 10)+"px"}, set.animateSpeed);
+					}
+					else{
+						if(set.door) that.fadeOut(1000);
+					}
+					if((target.scrollLeft() != current.left) && (target.scrollLeft() >= start.left) && (target.scrollLeft()+parseInt(set.pos.left.replace(regex, ""), 10)+that.outerWidth(true) < end.left)){
+						that.animate({"left": target.scrollLeft()+parseInt(set.pos.left.replace(regex, ""), 10)+"px"}, set.animateSpeed);
+					}	
 					break;
 				}
 				
@@ -543,7 +570,7 @@
 			width: "auto",
 			height: "auto",
 			autoPlay: true,
-			timeSpeed: 500,
+			timeSpeed: 1000,
 			itemPlay: 1,
 			itemShow: "auto",
 			seamlessMode: true,
@@ -589,7 +616,7 @@
 			cPos=[];
 			// Initialize //
 			isComplete[that]=true;
-			if(set.animate == "fade") set.seamlessMode=false;
+			//if(set.animate == "fade") set.seamlessMode=false;
 			if(set.startFrom == "auto"){
 				if(obj.container.height()/obj.item.height() > obj.container.width()/obj.item.width())
 					set.startFrom="top" 
@@ -663,7 +690,7 @@
 					obj.container.html(html+html);
 				}
 			}
-			if(set.obj.page.autoGeneration){
+			if(!obj.page.wrap.html()){
 				// 自動產生分頁 //
 				var html="", script=null;
 				for(var i=1; i <= obj.item.length; i++){
@@ -708,11 +735,6 @@
 			function exec(evt, moveLength){
 				if((!isComplete[that]) || (isHover)) return;
 				isComplete[that]=false;
-				if(obj.page.wrap){
-					if(!index) index=0;
-					obj.page.item.removeClass(set.obj.page.currentClass);
-					obj.page.item.eq(index).addClass(set.obj.page.currentClass);
-				}
 				if(set.autoPlay == true) clearTimeout(timer[that]);			
 				if(axis == "horizontal"){
 					cPos[that]=parseInt(obj.container.css("left").replace(regex, ""), 10); //Current Position
@@ -803,10 +825,14 @@
 									// Seamless Mode //											
 									index=index-obj.item.length;
 									if(Math.abs(index) > obj.item.length-1) index=0;
-
 								}
 								else if(index < 0) index=0;
-								obj.caption.html(obj.item.eq(index).find(obj.text).html()).fadeIn(set.animateSpeed);		
+								obj.caption.html(obj.item.eq(index).find(obj.text).html()).fadeIn(set.animateSpeed);
+
+								if(obj.page.wrap){
+									obj.page.item.removeClass(set.obj.page.currentClass);
+									obj.page.item.eq(index).addClass(set.obj.page.currentClass);
+								}	
 							}).fadeIn(set.animateSpeed);			
 						break;
 					}
@@ -847,12 +873,14 @@
 })(jQuery);
 $(document).ready(function() {
 	$("*[data-magic=code]").mg_replace({mapping:{"\<":"&lt;","\>":"&gt;"," ":"&nbsp;","\\n":"<br />"}});
-	$("*[data-magic=fixed]").mg_fixed();	
-	$("*[data-magic=view]").mg_view();	
+	$("*[data-magic=backtoTop]").mg_fixed({start:{top:"100px"},door:true,animateSpeed:0});
+	$("*[data-magic=fixed]").mg_fixed();
+	$("*[data-magic=fixedTop]").mg_fixed({start:{obj:".this"},pos:{top:"0px"},animateSpeed:0});	
 	$("*[data-magic-src]").mg_image();	
 	$("*[data-magic=btn]").mg_change();
 	$("*[data-magic=menu]").mg_menu();
 	$("*[data-magic=scrollbar]").mg_scrollbar();
 	$("*[data-magic=marquee]").mg_slideshow();
-	$("*[data-magic=banner]").mg_slideshow({animate:"fade",timeSpeed:"2000"});
+	$("*[data-magic=banner]").mg_slideshow({animate:"fade",timeSpeed:"2000",startFrom:"bottom"});
+	$("*[data-magic=view]").mg_slideshow({animate:"fade",autoPlay:false,startFrom:"bottom"});
 });
